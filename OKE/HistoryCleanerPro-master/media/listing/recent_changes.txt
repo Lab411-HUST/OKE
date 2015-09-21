@@ -1,0 +1,16 @@
+3.1.3
+- Add clearing of Firefox search widget history (stable, beta, and nightly)
+- Update clearing of Wikipedia app (search and browsing history)
+
+3.1.2
+- Update to clearing Waze recent destinations
+
+3.1.1
+- Split call log into separate outgoing, incoming, and missed call items
+- Added settings search history (Lollipop only)
+
+3.1.0
+- Add Firefox Nightly
+- Add Waze recent destinations
+
+Email ayros@email.com if you have any issues, I am here to help.
