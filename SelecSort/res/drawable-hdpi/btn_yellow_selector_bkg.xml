@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:drawable="@drawable/btn_yellow_focused_bkg" android:state_pressed="true"/>
+    <item android:drawable="@drawable/btn_yellow_focused_bkg" android:state_focused="true"/>
+    <item android:drawable="@drawable/btn_yellow_no_focused_bkg"/>
+
+</selector>
