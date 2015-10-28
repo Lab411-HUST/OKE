@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SurveyProfile</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="age">Age</string>
+    <string name="sex">Sex</string>
+    <string name="survey_game">Bạn có chơi game không?</string>
+    <string name="survey_music">Bạn có nghe nhạc không?</string>
+    <string name="survey_wifi_3G">Bạn có thường xuyên sử dụng mạng di dộng, wifi không?</string>
+    <string name="survey_chat">Bạn có thường xuyên sử dụng dịch vụ chat, mạng xã hội không?</string>
+    <string name="survey_image">Bạn có sử dụng máy ảnh và các tiện ích hình ảnh?</string>
+    <string name="survey_call">Thời gian nghe và gọi mỗi ngày của bạn</string>
+    <string name="select"></string>
+    <string name="save">Save Profile</string>
+    <string name="exit">Exit</string>
+    <string name="clear">Reset</string>
+    <string name="name">Name</string>
+    <string name="type">Type Here</string>
+
+</resources>
