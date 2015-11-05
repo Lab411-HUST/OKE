@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -68,8 +69,15 @@ import android.widget.ToggleButton;
 
 import javax.sql.DataSource;
 
-public class ActivityMain extends Activity {
 
+public class ActivityMain extends Activity {
+    static Thread th;
+    static int m = 0;
+
+    int n=80000;
+    TextView tvv;
+    boolean kill=true;
+    long startTime, endTime;
     private boolean cpuTotal, cpuAM,
             memUsed, memAvailable, memFree, cached, threshold, canvasLocked;
     private int intervalRead, intervalUpdate, intervalWidth, animDuration = 200,
@@ -1105,6 +1113,8 @@ public class ActivityMain extends Activity {
     public void onDestroy() {
         super.onDestroy();
 //		orientationChanged = false;
+        kill = false;
+        super.onDestroy();
         if (mThread != null) {
             mThread.interrupt();
             mThread = null;
@@ -1205,32 +1215,121 @@ public void actionZip() {
 //        fos.close();
 //        }
 
-    public void startMeasureResponseTime(){
-        zipHanler.postDelayed(zipRunnable,0);
+    //zip
+//    public void startMeasureResponseTime(){
+//        zipHanler.postDelayed(zipRunnable,0);
+//    }
+//
+//    public Runnable zipRunnable = new Runnable() {
+//        @Override
+//        public void run() {
+////            File del = new File("sdcard/AnotherMonitor/Compress/Video.zip");
+////            del.delete();
+//            long timeStart = System.currentTimeMillis();
+//            actionZip();
+//            long timeEnd = System.currentTimeMillis();
+//            long result = timeEnd - timeStart;
+//            try {
+//                FileOutputStream fileResponse = new FileOutputStream(("sdcard/AnotherMonitor/Compress/CurrentResponseTime.txt"), true);
+//                String tmp = String.valueOf(result);
+//                fileResponse.write((tmp + ("\n")).getBytes());
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+////            actionUnZip();
+//            zipHanler.postDelayed(this, 30000);
+//        }
+//    };
+    Handler hd = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            long t =  (Long) msg.obj;
+            //tvv.setText("Respone Time: "+String.valueOf(t)+ " milisecond");
+            super.handleMessage(msg);
+        }
+
+
+    };
+    public void sapxepMang() throws InterruptedException {
+
+        th = new Thread() {
+
+            @Override
+            public void run() {
+                super.run();
+                while (kill) {
+                    m++;
+
+                    int[] a = new int[n];
+                    Random rand = new Random();
+
+                    /* for(int i=0; i<n; i++) */// System.out.printf("\t" + a[i]);
+                    for (int i = 0; i < n; i++)
+                        switch (a[i] = rand.nextInt()) {
+                        }
+                    //	System.out.println("\n");
+                    long startTime = System.currentTimeMillis();
+
+                    for (int j = 0; j < a.length; j++) {
+                        int max = a[j];
+                        int index = j;
+                        for (int k = j + 1; k < a.length; k++) {
+                            if (max < a[k]) {
+                                max = a[k];
+                                index = k;
+                            }
+                        }
+                        // Nếu chỉ số đã thay đổi, ta sẽ hoán vị
+                        if (index != j) {
+                            int temp = a[j];
+                            a[j] = a[index];
+                            a[index] = temp;
+                        }
+                    }
+
+                    //	System.out.println("\nSap xep:");
+                    for (int h = 0; h < n; h++) {
+                        //		System.out.printf("\t" + a[h]);
+                    }
+                    //	System.out.println("\n");
+
+                    long endTime = System.currentTimeMillis();
+                    long rt = endTime - startTime;
+
+                    Message mess = new Message();
+                    mess.obj = rt;
+                    hd.sendMessage(mess);
+                    System.out.println("thoi gian:" + rt);
+
+                    try {
+                        FileOutputStream file = new FileOutputStream((new File("/sdcard/ResponeTime.txt")),true);
+                        String tmp=String.valueOf(rt);
+                        file.write((tmp+"\n").getBytes());
+                    } catch (FileNotFoundException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+					/*if (m == 60)
+						break;*/
+
+                }
+            }
+        };
+        th.start();
+
     }
 
-    public Runnable zipRunnable = new Runnable() {
-        @Override
-        public void run() {
-//            File del = new File("sdcard/AnotherMonitor/Compress/Video.zip");
-//            del.delete();
-            long timeStart = System.currentTimeMillis();
-            actionZip();
-            long timeEnd = System.currentTimeMillis();
-            long result = timeEnd - timeStart;
-            try {
-                FileOutputStream fileResponse = new FileOutputStream(("sdcard/AnotherMonitor/Compress/CurrentResponseTime.txt"), true);
-                String tmp = String.valueOf(result);
-                fileResponse.write((tmp + ("\n")).getBytes());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-//            actionUnZip();
-            zipHanler.postDelayed(this, 30000);
-        }
-    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -1242,11 +1341,16 @@ public void actionZip() {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.startMeasure:
-                startMeasureResponseTime();
+
+                try {
+                    sapxepMang();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 return true;
-            case R.id.stopMeasure:
-                zipHanler.removeCallbacks(zipRunnable);
-                return true;
+//            case R.id.stopMeasure:
+//                zipHanler.removeCallbacks(sapxepMang(););
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
